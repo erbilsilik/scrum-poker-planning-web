@@ -1,0 +1,54 @@
+<div class="container">
+    <div id="logo">
+        <h2>Scrum Poker</h2>
+    </div>
+    <form (ngSubmit)="onSubmit()" #sessionForm="ngForm">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="sessionName">Session name</label>
+                    <input type="text" 
+                        class="form-control" 
+                        [(ngModel)]="session.name"
+                        id="sessionName" 
+                        name="sessionName"
+                        maxlength="200"
+                        #sessionName="ngModel"
+                        required/>
+                        <div [hidden]="sessionName.valid || sessionName.pristine" class="alert alert-danger">
+                            Session Name is required
+                        </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="numberOfVoters">Number of voters</label>
+                    <input type="number"
+                           class="form-control"
+                           [(ngModel)]="session.numberOfVoters"
+                           name="numberOfVoters"
+                           id="numberOfVoters" 
+                           #numberOfVoters="ngModel"
+                           required/>
+                            <div [hidden]="numberOfVoters.valid || numberOfVoters.pristine" class="alert alert-danger">
+                                Number of Voters is required
+                            </div>
+                </div>
+            </div>
+        </div>
+        <p>Paste your story list (Each line will be converted as a story)</p>
+        <div class="row">
+            <div class="col-md-12">
+                <textarea name="storyList" [(ngModel)]="storyList"></textarea>
+            </div>
+        </div>
+
+        <div class="button">
+            <button type="submit" class="btn btn-success" [disabled]="!sessionForm.form.valid">
+                Start Session
+            </button>
+        </div>
+    </form>
+</div>
+
+{{ session | json }}
