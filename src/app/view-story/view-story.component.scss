@@ -1,0 +1,36 @@
+.container {
+    .content {
+        padding-top: 40px;
+    }
+    .col-md-4 {
+        padding-right: 50px;
+    }
+    .story-list {
+        table {
+            min-height: 400px;
+        }
+    }
+    .fibonacci {
+            min-height: 400px;
+            a {
+                &.disable {
+                    pointer-events: none;
+                }
+                .col-md-3 {
+                    min-height: 134px;
+                    border: 0.5px solid black;
+                    text-align: center;
+                    &.voted {
+                        background: aquamarine;
+                    }
+                    span {
+                        line-height: 134px;
+                    }
+                }   
+            }
+    }
+    .scrum-master-portal {
+        min-height: 400px;
+        border: 1px solid black;
+    }
+}

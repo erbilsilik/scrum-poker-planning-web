@@ -3,7 +3,10 @@
         <h2>Scrum Poker</h2>
     </div>
     <div class="row content">
-        <div class="col-md-4 story-list">
+        <div class="col-md-4 story-list" [ngClass]="{
+                'col-md-4': isScrumMaster,
+                'col-md-7': !isScrumMaster
+            }">
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -27,49 +30,17 @@
         <div class="col-md-4 fibonacci">
             <!-- {{ activeStory.name }} -->
             <div class="row">
-                <div class="col-md-3">
-                    1
-                </div>
-                <div class="col-md-3">
-                    2
-                </div>
-                <div class="col-md-3">
-                    3
-                </div>
-                <div class="col-md-3">
-                    5
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    1
-                </div>
-                <div class="col-md-3">
-                    2
-                </div>
-                <div class="col-md-3">
-                    3
-                </div>
-                <div class="col-md-3">
-                    5
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    1
-                </div>
-                <div class="col-md-3">
-                    2
-                </div>
-                <div class="col-md-3">
-                    3
-                </div>
-                <div class="col-md-3">
-                    5
-                </div>
+                <a href="javascript:;" (click)="vote(fbNumber)" 
+                                        *ngFor="let fbNumber of fbNumbers"
+                                        [ngClass]="{'disable': voted }">
+                    <div class="col-md-3" [ngClass]="{'voted': fbNumber.voted}">
+                        <span>{{ fbNumber.number }} </span>
+                        <span>{{ fbNumber.voted }} </span>
+                    </div>
+                </a>
             </div>
         </div>
-        <div class="col-md-4 scrum-master-portal">
+        <div class="col-md-4 scrum-master-portal" *ngIf="isScrumMaster">
             {{ activeStory.name }} is active
             <ul>
                 <li *ngFor="let voter of activeVoterNumbers; let i = index">

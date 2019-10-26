@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ScrumMasterViewComponent } from './scrum-master-view.component';
+import { ViewStoryComponent } from './view-story.component';
 
 describe('ScrumMasterViewComponent', () => {
-  let component: ScrumMasterViewComponent;
-  let fixture: ComponentFixture<ScrumMasterViewComponent>;
+  let component: ViewStoryComponent;
+  let fixture: ComponentFixture<ViewStoryComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ScrumMasterViewComponent ]
+      declarations: [ ViewStoryComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ScrumMasterViewComponent);
+    fixture = TestBed.createComponent(ViewStoryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

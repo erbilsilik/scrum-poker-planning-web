@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Session } from '../session';
 
@@ -12,7 +12,13 @@ export class SessionService {
   constructor(private http: HttpClient) { }
 
   create(session: Session): Observable<Session> {
-    return this.http.post<Session>(`${this.baseUrl}/sessions`, session);
+    return this.http.post<Session>(
+      `${this.baseUrl}/sessions`, session, {
+        headers: {
+          scrumMasterUuid: localStorage.getItem('scrumMasterUuid')
+        }
+      }
+    );
   }
 
   get(sessionId: string): Observable<Session> {

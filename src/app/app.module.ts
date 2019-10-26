@@ -6,14 +6,14 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AddStoryListComponent } from './add-story-list/add-story-list.component';
-import { ScrumMasterViewComponent } from './scrum-master-view/scrum-master-view.component';
+import { ViewStoryComponent } from './view-story/view-story.component';
 import { SessionResolver } from './resolvers/session.resolver';
 
 @NgModule({
   declarations: [
     AppComponent,
     AddStoryListComponent,
-    ScrumMasterViewComponent
+    ViewStoryComponent
   ],
   imports: [
     BrowserModule,
@@ -22,7 +22,7 @@ import { SessionResolver } from './resolvers/session.resolver';
     FormsModule
   ],
   providers: [
-    SessionResolver
+    SessionResolver,
   ],
   bootstrap: [AppComponent]
 })

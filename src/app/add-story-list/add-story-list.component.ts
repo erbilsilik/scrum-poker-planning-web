@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Session } from '../session';
 import { SessionService } from '../services/session.service';
 import { Router } from '@angular/router';
+import { UtilsService } from '../services/utils.service.';
 
 @Component({
   selector: 'app-add-story-list',
@@ -15,6 +16,7 @@ export class AddStoryListComponent {
   constructor(
     private sessionService: SessionService,
     private router: Router,
+    private utilsService: UtilsService,
     ) { }
 
   onSubmit() {
@@ -24,9 +26,12 @@ export class AddStoryListComponent {
                               .map(item => {
                                 return { name: item };
                               });
-
+    localStorage.setItem(
+      'scrumMasterUuid',
+      this.utilsService.createUuid()
+    );
     this.sessionService.create(this.session).subscribe((newSession) => {
-      this.router.navigateByUrl(`/poker-planning-view-scrum-master/${newSession._id}`);
+      this.router.navigateByUrl(`/poker-planning-view-as-scrum-master/${newSession._id}`);
     }, (err) => {
       console.log(`${err} while creating sessions`);
     });
