@@ -8,6 +8,11 @@
     .story-list {
         table {
             min-height: 400px;
+            tr {
+                &.active {
+                    background: aliceblue;
+                }
+            }
         }
     }
     .fibonacci {

@@ -2,6 +2,12 @@
     <div id="logo">
         <h2>Scrum Poker</h2>
     </div>
+    <div class="row">
+        <span>please share link of developers panel to the teammates.</span>
+        <a href="javascript:;" [routerLink]="['/poker-planning-view-as-developer/', session.id]">
+            {{ '/poker-planning-view-as-developer/' + session.id}}
+        </a>
+    </div>
     <div class="row content">
         <div class="col-md-4 story-list" [ngClass]="{
                 'col-md-4': isScrumMaster,
@@ -17,9 +23,12 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let story of session.stories">
-                        <td>
-                            <a href="javascript:;" (click)="activeStory = story">
-                                {{ story.name }}</a>
+                        <td [ngClass]="{'active': activeStory == story }">
+                            <a href="javascript:;" *ngIf="isScrumMaster"
+                                                (click)="updateActiveStory(story)">
+                                <span>{{ story.name }}</span>
+                            </a>
+                            <span *ngIf="!isScrumMaster">{{ story.name }}</span>
                         </td>
                         <td>{{ story.numberOfVoters }}</td>
                         <td>{{ story.status }} </td>
@@ -30,28 +39,34 @@
         <div class="col-md-4 fibonacci">
             <!-- {{ activeStory.name }} -->
             <div class="row">
-                <a href="javascript:;" (click)="vote(fbNumber)" 
-                                        *ngFor="let fbNumber of fbNumbers"
-                                        [ngClass]="{'disable': voted }">
-                    <div class="col-md-3" [ngClass]="{'voted': fbNumber.voted}">
-                        <span>{{ fbNumber.number }} </span>
-                        <span>{{ fbNumber.voted }} </span>
-                    </div>
-                </a>
+                <ng-container *ngFor="let card of activeStory.cards; let i = index">
+                    <a href="javascript:;" (click)="vote(i)" [ngClass]="{'disable': voted }">
+                        <div class="col-md-3" [ngClass]="{'voted': isVoted(card.voterIds)}">
+                            <span>{{ card.number }} </span>
+                        </div>
+                    </a>
+                </ng-container>
             </div>
         </div>
         <div class="col-md-4 scrum-master-portal" *ngIf="isScrumMaster">
-            {{ activeStory.name }} is active
+            <span>{{ activeStory.name }} is active</span>
             <ul>
-                <li *ngFor="let voter of activeVoterNumbers; let i = index">
-                    Voter {{ i + 1}} : 
+                <li *ngFor="let voter of session.voters; let i = index">
+                    <span>{{ isScrumMaster ? 'Scrum Master' : 'Voter' }} {{ i + 1}} : {{ voter }}</span>
                 </li>
             </ul>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="button">
+                        <button type="submit" class="btn btn-success" [disabled]="session.voters !== session.numberOfVoters">
+                            End voting for {{ activeStory.name }}
+                        </button>
+                    </div>
+                    <div>
+                        <span>You can not end voting till each voted</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
-
-{{ session | json}}
-
-{{ fibNumbers | json }}

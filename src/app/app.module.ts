@@ -19,7 +19,7 @@ import { SessionResolver } from './resolvers/session.resolver';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [
     SessionResolver,

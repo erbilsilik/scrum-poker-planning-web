@@ -20,18 +20,13 @@ export class AddStoryListComponent {
     ) { }
 
   onSubmit() {
-    this.session.stories = this.storyList
-                              .split('\n')
-                              .filter(item => item !== '')
-                              .map(item => {
-                                return { name: item };
-                              });
+    this.session.stories = this.storyList;
     localStorage.setItem(
       'scrumMasterUuid',
       this.utilsService.createUuid()
     );
     this.sessionService.create(this.session).subscribe((newSession) => {
-      this.router.navigateByUrl(`/poker-planning-view-as-scrum-master/${newSession._id}`);
+      this.router.navigateByUrl(`/poker-planning-view-as-scrum-master/${newSession.id}`);
     }, (err) => {
       console.log(`${err} while creating sessions`);
     });

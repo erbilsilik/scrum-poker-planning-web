@@ -1,7 +1,7 @@
 export class Session {
-    _id: string;
+    id: string;
     name;
     numberOfVoters;
-    stories: Array<any>;
+    stories: any;
     scrumMasterUuid: string;
 }
