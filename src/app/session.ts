@@ -1,5 +1,6 @@
 export class Session {
+    _id?: string;
     name;
     numberOfVoters;
-    storyList: Array<string>;
+    stories: Array<any>;
 }

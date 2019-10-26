@@ -1,0 +1,86 @@
+<div class="container">
+    <div id="logo">
+        <h2>Scrum Poker</h2>
+    </div>
+    <div class="row content">
+        <div class="col-md-4 story-list">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Story</th>
+                        <th>Story Point</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let story of session.stories">
+                        <td>
+                            <a href="javascript:;" (click)="activeStory = story">
+                                {{ story.name }}</a>
+                        </td>
+                        <td>{{ story.numberOfVoters }}</td>
+                        <td>{{ story.status }} </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4 fibonacci">
+            <!-- {{ activeStory.name }} -->
+            <div class="row">
+                <div class="col-md-3">
+                    1
+                </div>
+                <div class="col-md-3">
+                    2
+                </div>
+                <div class="col-md-3">
+                    3
+                </div>
+                <div class="col-md-3">
+                    5
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    1
+                </div>
+                <div class="col-md-3">
+                    2
+                </div>
+                <div class="col-md-3">
+                    3
+                </div>
+                <div class="col-md-3">
+                    5
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    1
+                </div>
+                <div class="col-md-3">
+                    2
+                </div>
+                <div class="col-md-3">
+                    3
+                </div>
+                <div class="col-md-3">
+                    5
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 scrum-master-portal">
+            {{ activeStory.name }} is active
+            <ul>
+                <li *ngFor="let voter of activeVoterNumbers; let i = index">
+                    Voter {{ i + 1}} : 
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+{{ session | json}}
+
+{{ fibNumbers | json }}
