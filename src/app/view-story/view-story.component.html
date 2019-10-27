@@ -5,7 +5,7 @@
     <div class="row">
         <span>please share link of developers panel to the teammates.</span>
         <a href="javascript:;" [routerLink]="['/poker-planning-view-as-developer/', session.id]">
-            {{ '/poker-planning-view-as-developer/' + session.id}}
+            {{ '/poker-planning-view-as-developer/' + session.id }}
         </a>
     </div>
     <div class="row content">
@@ -51,8 +51,9 @@
         <div class="col-md-4 scrum-master-portal" *ngIf="isScrumMaster">
             <span>{{ activeStory.name }} is active</span>
             <ul>
-                <li *ngFor="let voter of session.voters; let i = index">
-                    <span>{{ isScrumMaster ? 'Scrum Master' : 'Voter' }} {{ i + 1}} : {{ voter }}</span>
+                <li *ngFor="let item of panel; let i = index">
+                        <span *ngIf="!item.voter">Waiting for Connection : {{ item.status }}</span>
+                        <span *ngIf="item.voter">{{ isScrumMaster ? 'Scrum Master' : 'Voter' }} : {{ item.status }}</span>
                 </li>
             </ul>
             <div class="row">

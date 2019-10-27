@@ -4,4 +4,5 @@ export class Session {
     numberOfVoters;
     stories: any;
     scrumMasterUuid: string;
+    voters: Array<string>;
 }

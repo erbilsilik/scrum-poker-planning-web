@@ -16,6 +16,7 @@ export class ViewStoryComponent implements OnInit {
   public isScrumMaster: boolean;
   public voted = false;
   public voterId: string;
+  public panel = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -57,6 +58,7 @@ export class ViewStoryComponent implements OnInit {
     this.sessionService.get(this.session.id).subscribe(data => {
       this.session = data;
       this.activeStory = this.session.stories.find(item => item.id === this.activeStory.id); // TODO check re assigment issue
+      this.updatePanelStatus();
       this.cd.detectChanges();
       setTimeout(() => {
         this.getSession();
@@ -69,8 +71,31 @@ export class ViewStoryComponent implements OnInit {
   }
 
   updateActiveStory(story) {
-    console.log(story);
     this.activeStory = story;
-    console.log(story, 'activeStory');
+  }
+
+  updatePanelStatus() {
+    this.panel = [];
+    this.session.voters.forEach(voter => {
+      const status = this.checkInclude(voter);
+      this.panel.push({
+        voter,
+        status: status ? 'VOTED' : 'NOT VOTED',
+      });
+    });
+  }
+
+  checkInclude(voter): any {
+    let includes = false;
+
+    if (voter) {
+      Object.values(this.activeStory.cards).forEach((value) => {
+        if (value.voterIds.includes(voter)) {
+          includes = true;
+        }
+      });
+    }
+
+    return includes;
   }
 }
