@@ -15,20 +15,12 @@ export class SessionService {
 
   create(session: Session): Observable<Session> {
     return this.http.post<Session>(
-      `${this.baseUrl}/sessions`, session, {
-        headers: {
-          scrumMasterUuid: localStorage.getItem('scrumMasterUuid')
-        }
-      }
+      `${this.baseUrl}/sessions`, session
     );
   }
 
   get(sessionId: string): Observable<Session> {
-    return this.http.get<Session>(`${this.baseUrl}/sessions/${sessionId}`, {
-      headers: {
-        scrumMasterUuid: localStorage.getItem('scrumMasterUuid')
-      }
-    });
+    return this.http.get<Session>(`${this.baseUrl}/sessions/${sessionId}`);
   }
 
   vote(sessionId: any, cardId: any, storyId: any, voterId: any): Observable<Session> {
@@ -38,11 +30,13 @@ export class SessionService {
       cardId,
       storyId,
       voterId
-    }, {
-      headers: {
-        scrumMasterUuid: localStorage.getItem('scrumMasterUuid')
-      }
     }
+    );
+  }
+
+  endVotingForStory(sessionId: string, storyId: string): Observable<Session> {
+    return this.http.put<Session>(
+      `${this.baseUrl}/sessions/${sessionId}/${storyId}`, {}
     );
   }
 }

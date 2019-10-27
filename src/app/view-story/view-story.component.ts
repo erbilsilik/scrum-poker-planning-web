@@ -2,8 +2,6 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Session } from '../session';
 import { SessionService } from '../services/session.service';
-import { UtilsService } from '../services/utils.service.';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-story',
@@ -21,7 +19,6 @@ export class ViewStoryComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private sessionService: SessionService,
-    private utilsService: UtilsService,
     private cd: ChangeDetectorRef,
   ) {
   }
@@ -29,11 +26,11 @@ export class ViewStoryComponent implements OnInit {
   ngOnInit() {
     this.session = this.route.snapshot.data.session;
     this.activeStory = this.session.stories[0];
-    this.isScrumMaster = localStorage.getItem('scrumMasterUuid')
-                      === this.session.scrumMasterUuid
+    this.voterId = localStorage.getItem('voterId');
+    this.isScrumMaster = localStorage.getItem('voterId')
+                      === this.session.voterId
                       ? true : false;
-    this.voterId = this.getVoterId();
-    localStorage.setItem('voterId', this.voterId);
+
     this.getSession();
   }
 
@@ -43,12 +40,11 @@ export class ViewStoryComponent implements OnInit {
       this.activeStory = this.session.stories.find(
         item => item.name === this.activeStory.name
       );
-      console.log(this.activeStory);
       this.updatePanelStatus();
       this.cd.detectChanges();
       setTimeout(() => {
         this.getSession();
-      }, 5000);
+      }, 2000);
     });
   }
 
@@ -61,9 +57,12 @@ export class ViewStoryComponent implements OnInit {
     const sessionId = this.session.id;
     this.voted = true;
 
-    this.sessionService.vote(sessionId, cardIndex, storyId, this.voterId).subscribe(data => {
-      console.log(data);
-    });
+    this.sessionService.vote(sessionId, cardIndex, storyId, this.voterId).toPromise();
+  }
+
+  endVotingForStory() {
+    const storyId = this.session.stories.indexOf(this.activeStory);
+    this.sessionService.endVotingForStory(this.session.id, storyId).toPromise();
   }
 
   private updatePanelStatus() {
@@ -85,7 +84,7 @@ export class ViewStoryComponent implements OnInit {
     let includes = false;
 
     if (voter) {
-      Object.values(this.activeStory.cards).forEach((value) => {
+      Object.values(this.activeStory.cards).forEach((value: any) => {
         if (value.voterIds.includes(voter)) {
           includes = true;
         }
@@ -93,16 +92,5 @@ export class ViewStoryComponent implements OnInit {
     }
 
     return includes;
-  }
-
-  private getVoterId(): string {
-    if (!this.isScrumMaster) {
-      if (!localStorage.getItem('voterId')) {
-        return this.utilsService.createUuid();
-      } else {
-        return localStorage.getItem('voterId');
-      }
-    }
-    return this.session.scrumMasterUuid;
   }
 }

@@ -3,6 +3,6 @@ export class Session {
     name;
     numberOfVoters;
     stories: any;
-    scrumMasterUuid: string;
+    voterId: string;
     voters: Array<string>;
 }

@@ -22,7 +22,7 @@ export class AddStoryListComponent {
   onSubmit() {
     this.session.stories = this.storyList;
     localStorage.setItem(
-      'scrumMasterUuid',
+      'voterId',
       this.utilsService.createUuid()
     );
     this.sessionService.create(this.session).subscribe((newSession) => {
