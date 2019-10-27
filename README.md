@@ -25,4 +25,4 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 
 ### Dev View
 
-![alt text](https://github.com/erbilsilik/scrum-poker-planning-web/blob/master/scrum-dev-view.png.png)
+![alt text](https://github.com/erbilsilik/scrum-poker-planning-web/blob/master/scrum-dev-view.png)
