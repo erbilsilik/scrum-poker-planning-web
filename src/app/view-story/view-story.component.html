@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="session; else error">
     <div id="logo">
         <h2>Scrum Poker</h2>
     </div>
@@ -36,11 +36,11 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-4 fibonacci">
+        <div class="col-md-4 fibonacci" *ngIf="activeStory">
             <!-- {{ activeStory.name }} -->
             <div class="row">
                 <ng-container *ngFor="let card of activeStory.cards; let i = index">
-                    <a href="javascript:;" (click)="vote(i)" [ngClass]="{'disable': voted }">
+                    <a href="javascript:;" (click)="vote(i)">
                         <div class="col-md-3" [ngClass]="{'voted': isVoted(card.voterIds)}">
                             <span>{{ card.number }} </span>
                         </div>
@@ -48,7 +48,7 @@
                 </ng-container>
             </div>
         </div>
-        <div class="col-md-4 scrum-master-portal" *ngIf="isScrumMaster">
+        <div class="col-md-4 scrum-master-portal" *ngIf="activeStory && panel && isScrumMaster">
             <span>{{ activeStory.name }} is active</span>
             <ul>
                 <li *ngFor="let item of panel; let i = index">
@@ -71,3 +71,7 @@
         </div>
     </div>
 </div>
+
+<ng-template #error>
+    Some error occurred.
+</ng-template>

@@ -23,25 +23,37 @@ export class ViewStoryComponent implements OnInit {
     private sessionService: SessionService,
     private utilsService: UtilsService,
     private cd: ChangeDetectorRef,
-    private router: Router,
   ) {
   }
 
   ngOnInit() {
     this.session = this.route.snapshot.data.session;
     this.activeStory = this.session.stories[0];
-    this.isScrumMaster = localStorage.getItem('scrumMasterUuid') === this.session.scrumMasterUuid ? true : false;
-    this.voterId = localStorage.getItem('scrumMasterUuid');
-
-    // if (!this.isScrumMaster) {
-    //   if (!localStorage.getItem('voterId')) {
-    //     this.voterId = this.utilsService.createUuid();
-    //     localStorage.setItem('voterId', this.voterId);
-    //   } else {
-    //     this.voterId = localStorage.getItem('voterId');
-    //   }
-    // }
+    this.isScrumMaster = localStorage.getItem('scrumMasterUuid')
+                      === this.session.scrumMasterUuid
+                      ? true : false;
+    this.voterId = this.getVoterId();
+    localStorage.setItem('voterId', this.voterId);
     this.getSession();
+  }
+
+  getSession() {
+    this.sessionService.get(this.session.id).subscribe(data => {
+      this.session = data;
+      this.activeStory = this.session.stories.find(
+        item => item.name === this.activeStory.name
+      );
+      console.log(this.activeStory);
+      this.updatePanelStatus();
+      this.cd.detectChanges();
+      setTimeout(() => {
+        this.getSession();
+      }, 5000);
+    });
+  }
+
+  updateActiveStory(story) {
+    this.activeStory = story;
   }
 
   vote(cardIndex: any) {
@@ -54,27 +66,7 @@ export class ViewStoryComponent implements OnInit {
     });
   }
 
-  getSession() {
-    this.sessionService.get(this.session.id).subscribe(data => {
-      this.session = data;
-      this.activeStory = this.session.stories.find(item => item.id === this.activeStory.id); // TODO check re assigment issue
-      this.updatePanelStatus();
-      this.cd.detectChanges();
-      setTimeout(() => {
-        this.getSession();
-      }, 5000);
-    });
-  }
-
-  isVoted(voterIds: Array<string>) {
-    return voterIds.includes(this.voterId);
-  }
-
-  updateActiveStory(story) {
-    this.activeStory = story;
-  }
-
-  updatePanelStatus() {
+  private updatePanelStatus() {
     this.panel = [];
     this.session.voters.forEach(voter => {
       const status = this.checkInclude(voter);
@@ -85,7 +77,11 @@ export class ViewStoryComponent implements OnInit {
     });
   }
 
-  checkInclude(voter): any {
+  isVoted(voterIds: Array<string>) {
+    return voterIds.includes(this.voterId);
+  }
+
+  private checkInclude(voter): any {
     let includes = false;
 
     if (voter) {
@@ -97,5 +93,16 @@ export class ViewStoryComponent implements OnInit {
     }
 
     return includes;
+  }
+
+  private getVoterId(): string {
+    if (!this.isScrumMaster) {
+      if (!localStorage.getItem('voterId')) {
+        return this.utilsService.createUuid();
+      } else {
+        return localStorage.getItem('voterId');
+      }
+    }
+    return this.session.scrumMasterUuid;
   }
 }
