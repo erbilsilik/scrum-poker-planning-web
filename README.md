@@ -2,6 +2,12 @@
 
 Real time Scrum Pocker Planning (Experimental)
 
+## Running
+
+1) Clone => https://github.com/erbilsilik/scrum-poker-planning-api
+2) Run api => `npm run build`
+3) `npm start`
+
 ## Build
 
 Run `ng build` to build the project.
