@@ -25,11 +25,8 @@ export class ViewStoryComponent implements OnInit {
 
   ngOnInit() {
     this.session = this.route.snapshot.data.session;
-    this.activeStory = this.session.stories[0];
-    this.voterId = localStorage.getItem('voterId');
-    this.isScrumMaster = localStorage.getItem('voterId')
-                      === this.session.voterId
-                      ? true : false;
+    this.voterId = localStorage.getItem('voterId')
+    this.isScrumMaster = this.voterId === this.session.voterId ? true : false;
 
     this.getSession();
   }
@@ -37,9 +34,7 @@ export class ViewStoryComponent implements OnInit {
   getSession() {
     this.sessionService.get(this.session.id).subscribe(data => {
       this.session = data;
-      this.activeStory = this.session.stories.find(
-        item => item.name === this.activeStory.name
-      );
+      this.activeStory = this.session.stories[this.session.activeStory];
       this.updatePanelStatus();
       this.cd.detectChanges();
       setTimeout(() => {
@@ -48,8 +43,10 @@ export class ViewStoryComponent implements OnInit {
     });
   }
 
-  updateActiveStory(story) {
-    this.activeStory = story;
+  updateActiveStory(storyIndex) {
+    this.sessionService.updateActiveStory(this.session.id, storyIndex).toPromise().then((session) => {
+      this.activeStory = session;
+    });
   }
 
   vote(cardIndex: any) {
@@ -62,7 +59,7 @@ export class ViewStoryComponent implements OnInit {
 
   endVotingForStory() {
     const storyId = this.session.stories.indexOf(this.activeStory);
-    this.sessionService.endVotingForStory(this.session.id, storyId).toPromise();
+    this.sessionService.endVotingForStory(this.session.id, storyId, this.activeStory.finalScore).toPromise();
   }
 
   private updatePanelStatus() {
@@ -71,7 +68,7 @@ export class ViewStoryComponent implements OnInit {
       const status = this.checkInclude(voter);
       this.panel.push({
         voter,
-        status: status ? 'VOTED' : 'NOT VOTED',
+        status: status ? 'VOTED' : 'Waiting',
       });
     });
   }

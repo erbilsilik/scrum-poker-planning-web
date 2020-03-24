@@ -5,4 +5,5 @@ export class Session {
     stories: any;
     voterId: string;
     voters: Array<string>;
+    activeStory: number;
 }

@@ -34,9 +34,15 @@ export class SessionService {
     );
   }
 
-  endVotingForStory(sessionId: string, storyId: string): Observable<Session> {
+  updateActiveStory(sessionId, storyIndex): Observable<Session> {
     return this.http.put<Session>(
-      `${this.baseUrl}/sessions/${sessionId}/${storyId}`, {}
+      `${this.baseUrl}/sessions/${sessionId}`, { storyIndex }
+    );
+  }
+
+  endVotingForStory(sessionId: string, storyId: string, finalScore): Observable<Session> {
+    return this.http.put<Session>(
+      `${this.baseUrl}/sessions/${sessionId}/${storyId}`, { finalScore }
     );
   }
 }

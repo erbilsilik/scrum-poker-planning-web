@@ -22,10 +22,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let story of session.stories">
-                        <td [ngClass]="{'active': activeStory == story }">
+                    <tr *ngFor="let story of session.stories; let i = index">
+                        <td>
                             <a href="javascript:;" *ngIf="isScrumMaster"
-                                                (click)="updateActiveStory(story)">
+                                                (click)="updateActiveStory(i)">
                                 <span>{{ story.name }}</span>
                             </a>
                             <span *ngIf="!isScrumMaster">{{ story.name }}</span>
@@ -37,7 +37,6 @@
             </table>
         </div>
         <div class="col-md-4 fibonacci" *ngIf="activeStory">
-            <!-- {{ activeStory.name }} -->
             <div class="row">
                 <ng-container *ngFor="let card of activeStory.cards; let i = index">
                     <a href="javascript:;" (click)="vote(i)">
